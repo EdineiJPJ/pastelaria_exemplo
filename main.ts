@@ -1,7 +1,9 @@
 import express from "express";
 import pgp from 'pg-promise';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const hostbanco = '159.89.46.66'
@@ -56,8 +58,6 @@ app.put('/funcionarios', async (req, res) => {
     res.json({mesagem: 'atualizou'});
 })
 
-// ADICIONADO
-// excluir um funcionário com base no ID
 app.delete('/funcionarios/:id', async (req, res) => {
     const { id } = req.params;  // Captura o ID da URL
     try {
@@ -69,8 +69,7 @@ app.delete('/funcionarios/:id', async (req, res) => {
     }
 });
 
-// ADICIONADO
-// retorna os dados do funcionário conforme o ID na URL 
+
 app.get('/funcionarios/:id', async (req, res) => {
     const { id } = req.params;  // Captura o ID da URL
     const funcionario = await conexaobanco.oneOrNone('select id, nome, status, id_usuario from funcionarios where id = $1', [id]);
